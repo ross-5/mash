@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class P1Health : MonoBehaviour
 {
@@ -16,6 +18,7 @@ public class P1Health : MonoBehaviour
     void OnBecameInvisible()
     {
         currentHealth = 0;
+        SceneManager.LoadScene(2);
     }
     // Update is called once per frame
     void Update()
