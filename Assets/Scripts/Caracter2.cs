@@ -1,11 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Caracter2 : MonoBehaviour
 {
-    [SerializeField]
-    private float moveForce = 10f;
     [SerializeField]
     private float jumpForce = 11f;
 
@@ -19,6 +18,27 @@ public class Caracter2 : MonoBehaviour
     
     private int isGrounded = 2;
     private string GROUND_TAG = "Ground";
+
+    private float horizontalMove;
+    Vector2 move;
+    Vector2 value;
+
+    public float runSpeed = 40f;
+
+    private bool FacingRight = true;
+
+    public int TimesJumped = 0;
+    public int NumberOfJumps;
+
+    public Transform attackPoint;
+    public float attackRange = 0.5f;
+    public LayerMask enemyLayers;
+
+    private void OnMove(InputValue value)
+    {
+        // Gets the value of the joystick and translate it into a vector 2.  
+        move = value.Get<Vector2>();
+    }
     private void Awake()
     {
         myBody = GetComponent<Rigidbody2D>();
@@ -37,20 +57,42 @@ public class Caracter2 : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        PlayerMoveKeyboard();
+        //PlayerMoveKeyboard();
         AnimatePlayer();
-        PlayerJump();
     }
     private void FixedUpdate()
     {
+        if (FacingRight)
+        {
+            // Moves the player if facing right.
+            Vector3 movement = new Vector3(move.x, 0, 0) * runSpeed * Time.deltaTime;
+            transform.Translate(movement);
+        }
+        else
+        {
+            // Moves the player if facing left.
+            Vector3 movement = new Vector3(-move.x, 0, 0) * runSpeed * Time.deltaTime;
+            transform.Translate(movement);
 
+        }
+
+        horizontalMove = move.x;
+
+        if (horizontalMove > 0 && !FacingRight)
+        {
+            Flip();
+        }
+        else if (horizontalMove < 0 && FacingRight)
+        {
+            Flip();
+        }
     }
-
-    void PlayerMoveKeyboard()
+    private void Flip()
     {
-        movementX = Input.GetAxisRaw("Horizontal");
-        transform.position += new Vector3(movementX, 0f, 0f) * Time.deltaTime * moveForce;
+        // Flips the player.
+        FacingRight = !FacingRight;
 
+        transform.Rotate(0, 180, 0);
     }
     void AnimatePlayer()
     {
@@ -59,7 +101,6 @@ public class Caracter2 : MonoBehaviour
             anim.SetBool("OnGround", true);
         }
 
-     
         if (myBody.velocity.y > 0f)
         {
             anim.SetBool("IsJumping", true);
@@ -73,13 +114,14 @@ public class Caracter2 : MonoBehaviour
             anim.SetBool("IsJumping", false);
             anim.SetBool("isFalling", false);
         }
-        if (movementX > 0)
+
+        if (move.x > 0)
         {
-            sr.flipX = false;
+            //sr.flipX = false;
         }
-        else if (movementX < 0)
+        else if (move.x < 0)
         {
-            sr.flipX = true;
+            //sr.flipX = true;
         }
         else
         {
@@ -87,7 +129,7 @@ public class Caracter2 : MonoBehaviour
         }
         if (isGrounded == 2)
         {
-            if (movementX != 0)
+            if (move.x != 0)
             {
                 anim.SetBool(WALK_ANIMATION, true);
             }
@@ -97,21 +139,40 @@ public class Caracter2 : MonoBehaviour
             anim.SetBool(WALK_ANIMATION, false);
         }
     }
-    void PlayerJump()
+
+    private void OnAttack1()
     {
-        if (Input.GetButtonDown("Jump") && isGrounded > 0)
+        anim.SetTrigger("Attacking1");
+
+        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
+
+        foreach(Collider2D enemy in hitEnemies)
         {
-            myBody.velocity = Vector2.zero;
-            myBody.AddForce(new Vector2(0f, jumpForce), ForceMode2D.Impulse);
-            isGrounded--;
+            enemy.GetComponent<Health>().TakeDamage(10);
+            Debug.Log("We hit" + enemy.name);
         }
     }
-
+    private void OnJump()
+    {
+        // Let the player jump and checkes how many times he jumped.
+        if (TimesJumped < NumberOfJumps)
+        {
+            TimesJumped += 1;
+            gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(0f, 12f), ForceMode2D.Impulse);
+        }
+    }
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag(GROUND_TAG))
         {
             isGrounded = 2;
+            TimesJumped = 0;
         }
+    }
+    private void OnDrawGizmos()
+    {
+        if (attackPoint == null)
+            return;
+        Gizmos.DrawWireSphere(attackPoint.position, attackRange);
     }
 }
