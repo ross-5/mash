@@ -1448,12 +1448,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_JoinAction:
-    m_UseReference: 0
+    m_UseReference: 1
     m_Action:
-      m_Name: 
+      m_Name: Join
       m_Type: 0
       m_ExpectedControlType: 
-      m_Id: 
+      m_Id: 57f95c32-30ca-4409-99f6-a2fc7796e7fb
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings: []
