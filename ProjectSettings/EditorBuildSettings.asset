@@ -9,8 +9,17 @@ EditorBuildSettings:
     path: Assets/Scenes/Main Menu.unity
     guid: 3bf073977ff8ee6429097ca4c222d910
   - enabled: 1
+    path: Assets/Scenes/Stage Select.unity
+    guid: cd9144c6977e7b249bd13846b5dc124f
+  - enabled: 1
     path: Assets/Scenes/SampleScene.unity
     guid: 2cda990e2423bbf4892e6590ba056729
+  - enabled: 1
+    path: Assets/Scenes/Stage2.unity
+    guid: e84787c76a34231449aacf863331c524
+  - enabled: 1
+    path: Assets/Scenes/Stage3.unity
+    guid: 2aac7c143b62a5b4ea58524dc07fa941
   - enabled: 1
     path: Assets/Scenes/P2Wins.unity
     guid: 4b14085d8e1c63644ac80ab4dc975ded

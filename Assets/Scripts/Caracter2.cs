@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 public class Caracter2 : MonoBehaviour
 {
     [SerializeField]
-    
+    private float jumpForce = 11f;
 
     private float movementX;
 
@@ -142,23 +142,11 @@ public class Caracter2 : MonoBehaviour
 
     private void OnAttack1()
     {
-        if (anim.GetCurrentAnimatorStateInfo(0).IsName("Attack1"))
-        {
-
-        }
-        else
-        {
-            
         anim.SetTrigger("Attacking1");
 
-            
-        }
-    }
-    public void Attack1Damage()
-    {
         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
 
-        foreach (Collider2D enemy in hitEnemies)
+        foreach(Collider2D enemy in hitEnemies)
         {
             enemy.GetComponent<Health>().TakeDamage(10);
             Debug.Log("We hit" + enemy.name);
