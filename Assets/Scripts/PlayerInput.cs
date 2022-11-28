@@ -62,6 +62,15 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Dash"",
+                    ""type"": ""Button"",
+                    ""id"": ""bda6e6b2-c32e-48e0-b5db-e7347886894c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -108,6 +117,17 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""action"": ""Block"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ccf9f93b-8c65-4810-9349-c40713270d94"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Dash"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -120,6 +140,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         m_GamePlay_Jump = m_GamePlay.FindAction("Jump", throwIfNotFound: true);
         m_GamePlay_Attack1 = m_GamePlay.FindAction("Attack1", throwIfNotFound: true);
         m_GamePlay_Block = m_GamePlay.FindAction("Block", throwIfNotFound: true);
+        m_GamePlay_Dash = m_GamePlay.FindAction("Dash", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -183,6 +204,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     private readonly InputAction m_GamePlay_Jump;
     private readonly InputAction m_GamePlay_Attack1;
     private readonly InputAction m_GamePlay_Block;
+    private readonly InputAction m_GamePlay_Dash;
     public struct GamePlayActions
     {
         private @PlayerInput m_Wrapper;
@@ -191,6 +213,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         public InputAction @Jump => m_Wrapper.m_GamePlay_Jump;
         public InputAction @Attack1 => m_Wrapper.m_GamePlay_Attack1;
         public InputAction @Block => m_Wrapper.m_GamePlay_Block;
+        public InputAction @Dash => m_Wrapper.m_GamePlay_Dash;
         public InputActionMap Get() { return m_Wrapper.m_GamePlay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -212,6 +235,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @Block.started -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnBlock;
                 @Block.performed -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnBlock;
                 @Block.canceled -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnBlock;
+                @Dash.started -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnDash;
+                @Dash.performed -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnDash;
+                @Dash.canceled -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnDash;
             }
             m_Wrapper.m_GamePlayActionsCallbackInterface = instance;
             if (instance != null)
@@ -228,6 +254,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @Block.started += instance.OnBlock;
                 @Block.performed += instance.OnBlock;
                 @Block.canceled += instance.OnBlock;
+                @Dash.started += instance.OnDash;
+                @Dash.performed += instance.OnDash;
+                @Dash.canceled += instance.OnDash;
             }
         }
     }
@@ -238,5 +267,6 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         void OnJump(InputAction.CallbackContext context);
         void OnAttack1(InputAction.CallbackContext context);
         void OnBlock(InputAction.CallbackContext context);
+        void OnDash(InputAction.CallbackContext context);
     }
 }

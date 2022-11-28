@@ -32,6 +32,8 @@ public class Caracter2 : MonoBehaviour
     public int NumberOfJumps;
 
     public Transform attackPoint;
+    public Transform dashPoint;
+
     public float attackRange = 0.5f;
     public LayerMask enemyLayers;
 
@@ -152,7 +154,7 @@ public class Caracter2 : MonoBehaviour
 
     private void OnAttack1()
     {
-        if (anim.GetCurrentAnimatorStateInfo(0).IsName("Attack1"))
+        if (anim.GetCurrentAnimatorStateInfo(0).IsName("Dash") || anim.GetCurrentAnimatorStateInfo(0).IsName("Attack1"))
         {
 
         }
@@ -190,6 +192,21 @@ public class Caracter2 : MonoBehaviour
             Debug.Log("We hit" + enemy.name);
         }
     }
+
+    public void DashDamage()
+    {
+        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(dashPoint.position, attackRange*2, enemyLayers);
+
+        foreach (Collider2D enemy in hitEnemies)
+        {
+            enemy.GetComponent<Health>().TakeDamage(10);
+            Debug.Log("We hit" + enemy.name);
+            
+        }
+        Vector3 movement = new Vector3((System.Math.Abs(dashPoint.position.x - attackPoint.position.x)+.25f), 0, 0);
+        transform.Translate(movement);
+        sr.color = new Color(255, 255, 255, 255);
+    }
     private void OnJump()
     {
         // Let the player jump and checkes how many times he jumped.
@@ -197,6 +214,21 @@ public class Caracter2 : MonoBehaviour
         {
             TimesJumped += 1;
             gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(0f, 12f), ForceMode2D.Impulse);
+        }
+    }
+    private void OnDash()
+    {
+        if (anim.GetCurrentAnimatorStateInfo(0).IsName("Dash")||anim.GetCurrentAnimatorStateInfo(0).IsName("Attack1"))
+        {
+
+        }
+        else
+        {
+            sr.color = new Color(0, 234, 255, 255);
+
+            anim.SetTrigger("Dashing");
+
+
         }
     }
     private void OnCollisionEnter2D(Collision2D collision)
