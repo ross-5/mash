@@ -5,14 +5,15 @@ using UnityEngine.InputSystem;
 
 public class Caracter2 : MonoBehaviour
 {
-    [SerializeField]
+    
 
-
+    public bool vulnerable = true;
     private float movementX;
 
     private Rigidbody2D myBody;
 
     private SpriteRenderer sr;
+    
     private Animator anim;
     private string WALK_ANIMATION = "Walk";
 
@@ -34,6 +35,11 @@ public class Caracter2 : MonoBehaviour
     public float attackRange = 0.5f;
     public LayerMask enemyLayers;
 
+    [SerializeField]
+    private GameObject FindBubble;
+
+    private SpriteRenderer blockBubble;
+
     private void OnMove(InputValue value)
     {
         // Gets the value of the joystick and translate it into a vector 2.  
@@ -44,6 +50,9 @@ public class Caracter2 : MonoBehaviour
         myBody = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         sr = GetComponent<SpriteRenderer>();
+        blockBubble = FindBubble.GetComponent<SpriteRenderer>();
+
+        
 
     }
 
@@ -51,7 +60,7 @@ public class Caracter2 : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        blockBubble.enabled = false;
     }
 
     // Update is called once per frame
@@ -59,6 +68,7 @@ public class Caracter2 : MonoBehaviour
     {
         //PlayerMoveKeyboard();
         AnimatePlayer();
+        
     }
     private void FixedUpdate()
     {
@@ -154,6 +164,22 @@ public class Caracter2 : MonoBehaviour
 
         }
     }
+    private void OnBlock()
+    {
+        if (vulnerable)
+        {
+            blockBubble.enabled = true;
+            vulnerable = false;
+            StartCoroutine(BlockDelay());
+        }
+        
+    }
+    IEnumerator BlockDelay()
+    {
+        yield return new WaitForSeconds(2);
+        blockBubble.enabled = false;
+        vulnerable = true;
+    }
     public void Attack1Damage()
     {
         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
@@ -181,6 +207,7 @@ public class Caracter2 : MonoBehaviour
             TimesJumped = 0;
         }
     }
+    
     private void OnDrawGizmos()
     {
         if (attackPoint == null)

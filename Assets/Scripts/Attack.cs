@@ -11,7 +11,7 @@ public class Attack : MonoBehaviour
 
         if(health != null)
         {
-            health.TakeDamage(10);
+            //health.TakeDamage(10);
         }
 
         Destroy(gameObject);

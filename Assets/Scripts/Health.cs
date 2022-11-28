@@ -10,9 +10,17 @@ public class Health : MonoBehaviour
     public int currentHealth = maxHealth;
     public RectTransform healthbar;
 
+    [SerializeField]
+    GameObject getstatus;
+
+
     public void TakeDamage(int amount)
     {
-        currentHealth -= amount;
+        bool blocking = getstatus.GetComponent<Caracter2>().vulnerable;
+        if (blocking)
+        {
+            currentHealth -= amount;
+        }
         if(currentHealth <=0)
         {
             currentHealth = 0;

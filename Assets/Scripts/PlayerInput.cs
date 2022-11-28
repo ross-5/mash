@@ -53,6 +53,15 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Block"",
+                    ""type"": ""Button"",
+                    ""id"": ""70ba70d0-e200-4110-a8c0-74881b456fee"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -88,6 +97,17 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""action"": ""Attack1"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9c85c976-3db6-4f48-9d2a-2fb4af1411ba"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Block"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -99,6 +119,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         m_GamePlay_Move = m_GamePlay.FindAction("Move", throwIfNotFound: true);
         m_GamePlay_Jump = m_GamePlay.FindAction("Jump", throwIfNotFound: true);
         m_GamePlay_Attack1 = m_GamePlay.FindAction("Attack1", throwIfNotFound: true);
+        m_GamePlay_Block = m_GamePlay.FindAction("Block", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -161,6 +182,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     private readonly InputAction m_GamePlay_Move;
     private readonly InputAction m_GamePlay_Jump;
     private readonly InputAction m_GamePlay_Attack1;
+    private readonly InputAction m_GamePlay_Block;
     public struct GamePlayActions
     {
         private @PlayerInput m_Wrapper;
@@ -168,6 +190,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         public InputAction @Move => m_Wrapper.m_GamePlay_Move;
         public InputAction @Jump => m_Wrapper.m_GamePlay_Jump;
         public InputAction @Attack1 => m_Wrapper.m_GamePlay_Attack1;
+        public InputAction @Block => m_Wrapper.m_GamePlay_Block;
         public InputActionMap Get() { return m_Wrapper.m_GamePlay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -186,6 +209,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @Attack1.started -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnAttack1;
                 @Attack1.performed -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnAttack1;
                 @Attack1.canceled -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnAttack1;
+                @Block.started -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnBlock;
+                @Block.performed -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnBlock;
+                @Block.canceled -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnBlock;
             }
             m_Wrapper.m_GamePlayActionsCallbackInterface = instance;
             if (instance != null)
@@ -199,6 +225,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @Attack1.started += instance.OnAttack1;
                 @Attack1.performed += instance.OnAttack1;
                 @Attack1.canceled += instance.OnAttack1;
+                @Block.started += instance.OnBlock;
+                @Block.performed += instance.OnBlock;
+                @Block.canceled += instance.OnBlock;
             }
         }
     }
@@ -208,5 +237,6 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         void OnMove(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnAttack1(InputAction.CallbackContext context);
+        void OnBlock(InputAction.CallbackContext context);
     }
 }
