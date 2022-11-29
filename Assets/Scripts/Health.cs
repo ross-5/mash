@@ -25,7 +25,7 @@ public class Health : MonoBehaviour
         {
             currentHealth = 0;
             Debug.Log("Dead");
-            SceneManager.LoadScene(2);
+            SceneManager.LoadScene(5);
         }
 
         healthbar.sizeDelta = new Vector2(currentHealth * 2, healthbar.sizeDelta.y);

@@ -18,7 +18,7 @@ public class P1Health : MonoBehaviour
     void OnBecameInvisible()
     {
         currentHealth = 0;
-        SceneManager.LoadScene(2);
+        SceneManager.LoadScene(5);
     }
     // Update is called once per frame
     void Update()
