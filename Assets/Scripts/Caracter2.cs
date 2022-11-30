@@ -209,7 +209,7 @@ public class Caracter2 : MonoBehaviour
 
         foreach (Collider2D enemy in hitEnemies)
         {
-
+           
             enemy.GetComponent<Health>().TakeDamage(10);
             //Vector3 movementEnemy = new Vector3(400, 0, 0) * runSpeed * Time.deltaTime;
             //enemy.transform.Translate(movementEnemy);
