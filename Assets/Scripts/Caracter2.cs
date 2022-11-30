@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 public class Caracter2 : MonoBehaviour
 {
-    
+    private Transform originalParent;
 
     public bool vulnerable = true;
     private float movementX;
@@ -63,6 +63,7 @@ public class Caracter2 : MonoBehaviour
     void Start()
     {
         blockBubble.enabled = false;
+        originalParent = transform.parent;
     }
 
     // Update is called once per frame
@@ -245,5 +246,15 @@ public class Caracter2 : MonoBehaviour
         if (attackPoint == null)
             return;
         Gizmos.DrawWireSphere(attackPoint.position, attackRange);
+    }
+
+    public void SetParent(Transform newParent)
+    {
+        originalParent = transform.parent;
+        transform.parent = newParent;
+    }
+    public void ResetParent()
+    {
+        transform.parent = originalParent;
     }
 }

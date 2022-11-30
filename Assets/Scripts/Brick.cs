@@ -37,4 +37,20 @@ public class Brick : MonoBehaviour
 
         return waypoints1[currentWaypointIndex];
     }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        var plat = collision.collider.GetComponent<Caracter2>();
+        if(plat != null)
+        {
+            plat.SetParent(transform);
+        }
+    }
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        var plat = collision.collider.GetComponent<Caracter2>();
+        if (plat != null)
+        {
+            plat.ResetParent();
+        }
+    }
 }
