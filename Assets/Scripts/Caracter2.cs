@@ -190,6 +190,15 @@ public class Caracter2 : MonoBehaviour
         {
             enemy.GetComponent<Health>().TakeDamage(10);
             Debug.Log("We hit" + enemy.name);
+            if (FacingRight)
+            {
+                enemy.GetComponent<Rigidbody2D>().AddForce(new Vector2(4f, 8f), ForceMode2D.Impulse);
+            }
+            else
+            {
+                enemy.GetComponent<Rigidbody2D>().AddForce(new Vector2(-4f, 8f), ForceMode2D.Impulse);
+
+            }
         }
     }
 
@@ -199,7 +208,20 @@ public class Caracter2 : MonoBehaviour
 
         foreach (Collider2D enemy in hitEnemies)
         {
+
             enemy.GetComponent<Health>().TakeDamage(10);
+            //Vector3 movementEnemy = new Vector3(400, 0, 0) * runSpeed * Time.deltaTime;
+            //enemy.transform.Translate(movementEnemy);
+            if (FacingRight)
+            {
+                enemy.GetComponent<Rigidbody2D>().AddForce(new Vector2(4f, 8f), ForceMode2D.Impulse);
+            }
+            else
+            {
+                enemy.GetComponent<Rigidbody2D>().AddForce(new Vector2(-4f, 8f), ForceMode2D.Impulse);
+
+            }
+            enemy.GetComponent<Rigidbody2D>().AddForce(new Vector2(-4f, 8f), ForceMode2D.Impulse);
             Debug.Log("We hit" + enemy.name);
             
         }
@@ -213,7 +235,7 @@ public class Caracter2 : MonoBehaviour
         if (TimesJumped < NumberOfJumps)
         {
             TimesJumped += 1;
-            gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(0f, 12f), ForceMode2D.Impulse);
+            gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(0f, 8f), ForceMode2D.Impulse);
         }
     }
     private void OnDash()
