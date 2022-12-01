@@ -36,7 +36,9 @@ public class Caracter2 : MonoBehaviour
 
     public float attackRange = 0.5f;
     public LayerMask enemyLayers;
-
+    //for shoot
+    public Transform firePoint;
+    public GameObject shuriken;
     [SerializeField]
     private GameObject FindBubble;
 
@@ -155,7 +157,7 @@ public class Caracter2 : MonoBehaviour
 
     private void OnAttack1()
     {
-        if (anim.GetCurrentAnimatorStateInfo(0).IsName("Dash") || anim.GetCurrentAnimatorStateInfo(0).IsName("Attack1"))
+        if (anim.GetCurrentAnimatorStateInfo(0).IsName("Dash") || anim.GetCurrentAnimatorStateInfo(0).IsName("Attack1") || anim.GetCurrentAnimatorStateInfo(0).IsName("Shoot"))
         {
 
         }
@@ -193,11 +195,11 @@ public class Caracter2 : MonoBehaviour
             Debug.Log("We hit" + enemy.name);
             if (FacingRight)
             {
-                enemy.GetComponent<Rigidbody2D>().AddForce(new Vector2(4f, 8f), ForceMode2D.Impulse);
+                enemy.GetComponent<Rigidbody2D>().AddForce(new Vector2(6f, 8f), ForceMode2D.Impulse);
             }
             else
             {
-                enemy.GetComponent<Rigidbody2D>().AddForce(new Vector2(-4f, 8f), ForceMode2D.Impulse);
+                enemy.GetComponent<Rigidbody2D>().AddForce(new Vector2(-6f, 8f), ForceMode2D.Impulse);
 
             }
         }
@@ -222,7 +224,7 @@ public class Caracter2 : MonoBehaviour
                 enemy.GetComponent<Rigidbody2D>().AddForce(new Vector2(-4f, 8f), ForceMode2D.Impulse);
 
             }
-            enemy.GetComponent<Rigidbody2D>().AddForce(new Vector2(-4f, 8f), ForceMode2D.Impulse);
+            
             Debug.Log("We hit" + enemy.name);
             
         }
@@ -241,7 +243,7 @@ public class Caracter2 : MonoBehaviour
     }
     private void OnDash()
     {
-        if (anim.GetCurrentAnimatorStateInfo(0).IsName("Dash")||anim.GetCurrentAnimatorStateInfo(0).IsName("Attack1"))
+        if (anim.GetCurrentAnimatorStateInfo(0).IsName("Dash")||anim.GetCurrentAnimatorStateInfo(0).IsName("Attack1") || anim.GetCurrentAnimatorStateInfo(0).IsName("Shoot"))
         {
 
         }
@@ -253,6 +255,20 @@ public class Caracter2 : MonoBehaviour
 
 
         }
+    }
+    private void OnShoot()
+    {
+        if (anim.GetCurrentAnimatorStateInfo(0).IsName("Dash") || anim.GetCurrentAnimatorStateInfo(0).IsName("Attack1") || anim.GetCurrentAnimatorStateInfo(0).IsName("Shoot"))
+        {
+        }
+        else
+        {
+            anim.SetTrigger("Shooting");
+        }
+    }
+    public void ShootDamage()
+    {
+        Instantiate(shuriken,firePoint.position, firePoint.rotation);
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {

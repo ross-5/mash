@@ -71,6 +71,15 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Shoot"",
+                    ""type"": ""Button"",
+                    ""id"": ""f67d4c2b-6d06-4603-bf3b-2b71ec91cda5"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -128,6 +137,17 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""action"": ""Dash"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c8210c0b-3f2c-4fde-8bb5-eba05b04022c"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Shoot"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -141,6 +161,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         m_GamePlay_Attack1 = m_GamePlay.FindAction("Attack1", throwIfNotFound: true);
         m_GamePlay_Block = m_GamePlay.FindAction("Block", throwIfNotFound: true);
         m_GamePlay_Dash = m_GamePlay.FindAction("Dash", throwIfNotFound: true);
+        m_GamePlay_Shoot = m_GamePlay.FindAction("Shoot", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -205,6 +226,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     private readonly InputAction m_GamePlay_Attack1;
     private readonly InputAction m_GamePlay_Block;
     private readonly InputAction m_GamePlay_Dash;
+    private readonly InputAction m_GamePlay_Shoot;
     public struct GamePlayActions
     {
         private @PlayerInput m_Wrapper;
@@ -214,6 +236,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         public InputAction @Attack1 => m_Wrapper.m_GamePlay_Attack1;
         public InputAction @Block => m_Wrapper.m_GamePlay_Block;
         public InputAction @Dash => m_Wrapper.m_GamePlay_Dash;
+        public InputAction @Shoot => m_Wrapper.m_GamePlay_Shoot;
         public InputActionMap Get() { return m_Wrapper.m_GamePlay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -238,6 +261,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @Dash.started -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnDash;
                 @Dash.performed -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnDash;
                 @Dash.canceled -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnDash;
+                @Shoot.started -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnShoot;
+                @Shoot.performed -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnShoot;
+                @Shoot.canceled -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnShoot;
             }
             m_Wrapper.m_GamePlayActionsCallbackInterface = instance;
             if (instance != null)
@@ -257,6 +283,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @Dash.started += instance.OnDash;
                 @Dash.performed += instance.OnDash;
                 @Dash.canceled += instance.OnDash;
+                @Shoot.started += instance.OnShoot;
+                @Shoot.performed += instance.OnShoot;
+                @Shoot.canceled += instance.OnShoot;
             }
         }
     }
@@ -268,5 +297,6 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         void OnAttack1(InputAction.CallbackContext context);
         void OnBlock(InputAction.CallbackContext context);
         void OnDash(InputAction.CallbackContext context);
+        void OnShoot(InputAction.CallbackContext context);
     }
 }
