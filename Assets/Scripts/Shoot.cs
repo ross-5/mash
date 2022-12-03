@@ -13,7 +13,10 @@ public class Shoot : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         Debug.Log(collision.name);
+        Destroy(gameObject);
+        if (collision.GetComponent<Health>() != null)
         collision.GetComponent<Health>().TakeDamage(5);
+
         Destroy(gameObject);
 
     }

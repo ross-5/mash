@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -41,8 +42,12 @@ public class Caracter2 : MonoBehaviour
     public GameObject shuriken;
     [SerializeField]
     private GameObject FindBubble;
+    [SerializeField]
+    private GameObject PlayerNameText;
 
     private SpriteRenderer blockBubble;
+
+    private string PlayerName;
 
     private void OnMove(InputValue value)
     {
@@ -55,7 +60,10 @@ public class Caracter2 : MonoBehaviour
         anim = GetComponent<Animator>();
         sr = GetComponent<SpriteRenderer>();
         blockBubble = FindBubble.GetComponent<SpriteRenderer>();
-
+        PlayerHandler.PlayerCount++;
+        PlayerName = "P" + PlayerHandler.PlayerCount.ToString();
+        gameObject.name = PlayerName;
+        PlayerNameText.GetComponent<TextMeshProUGUI>().SetText(PlayerName);
         
 
     }
@@ -157,7 +165,7 @@ public class Caracter2 : MonoBehaviour
 
     private void OnAttack1()
     {
-        if (anim.GetCurrentAnimatorStateInfo(0).IsName("Dash") || anim.GetCurrentAnimatorStateInfo(0).IsName("Attack1") || anim.GetCurrentAnimatorStateInfo(0).IsName("Shoot"))
+        if (anim.GetCurrentAnimatorStateInfo(0).IsName("Dash") || anim.GetCurrentAnimatorStateInfo(0).IsName("Attack1") || anim.GetCurrentAnimatorStateInfo(0).IsName("Shoot") || blockBubble.enabled == true)
         {
 
         }
@@ -238,12 +246,13 @@ public class Caracter2 : MonoBehaviour
         if (TimesJumped < NumberOfJumps)
         {
             TimesJumped += 1;
-            gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(0f, 8f), ForceMode2D.Impulse);
+            gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+            gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(0f, 10f), ForceMode2D.Impulse);
         }
     }
     private void OnDash()
     {
-        if (anim.GetCurrentAnimatorStateInfo(0).IsName("Dash")||anim.GetCurrentAnimatorStateInfo(0).IsName("Attack1") || anim.GetCurrentAnimatorStateInfo(0).IsName("Shoot"))
+        if (anim.GetCurrentAnimatorStateInfo(0).IsName("Dash")||anim.GetCurrentAnimatorStateInfo(0).IsName("Attack1") || anim.GetCurrentAnimatorStateInfo(0).IsName("Shoot") || blockBubble.enabled == true)
         {
 
         }
@@ -258,7 +267,7 @@ public class Caracter2 : MonoBehaviour
     }
     private void OnShoot()
     {
-        if (anim.GetCurrentAnimatorStateInfo(0).IsName("Dash") || anim.GetCurrentAnimatorStateInfo(0).IsName("Attack1") || anim.GetCurrentAnimatorStateInfo(0).IsName("Shoot"))
+        if (anim.GetCurrentAnimatorStateInfo(0).IsName("Dash") || anim.GetCurrentAnimatorStateInfo(0).IsName("Attack1") || anim.GetCurrentAnimatorStateInfo(0).IsName("Shoot") || blockBubble.enabled == true)
         {
         }
         else
