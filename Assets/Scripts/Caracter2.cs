@@ -9,6 +9,7 @@ public class Caracter2 : MonoBehaviour
     private Transform originalParent;
 
     public bool vulnerable = true;
+    private bool readytoblock = true;
     private float movementX;
 
     private Rigidbody2D myBody;
@@ -179,7 +180,7 @@ public class Caracter2 : MonoBehaviour
     }
     private void OnBlock()
     {
-        if (vulnerable)
+        if (readytoblock == true)
         {
             blockBubble.enabled = true;
             vulnerable = false;
@@ -189,9 +190,12 @@ public class Caracter2 : MonoBehaviour
     }
     IEnumerator BlockDelay()
     {
-        yield return new WaitForSeconds(2);
+        readytoblock = false;
+        yield return new WaitForSeconds(0.35f);
         blockBubble.enabled = false;
         vulnerable = true;
+        yield return new WaitForSeconds(1f);
+        readytoblock= true;
     }
     public void Attack1Damage()
     {

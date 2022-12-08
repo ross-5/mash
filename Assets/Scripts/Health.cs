@@ -17,7 +17,7 @@ public class Health : MonoBehaviour
     public void TakeDamage(int amount)
     {
         bool blocking = getstatus.GetComponent<Caracter2>().vulnerable;
-        if (blocking)
+        if (blocking && PlayerHandler.gameStart)
         {
             currentHealth -= amount;
         }
@@ -25,7 +25,15 @@ public class Health : MonoBehaviour
         {
             currentHealth = 0;
             Debug.Log("Dead");
-            SceneManager.LoadScene(5);
+            PlayerHandler.PlayerCount--;
+            if(PlayerHandler.PlayerCount <2)
+            {
+                PlayerHandler.gameStart = false;
+                PlayerHandler.PlayerCount = 0;
+                SceneManager.LoadScene(5);
+            }
+            
+
         }
 
         healthbar.sizeDelta = new Vector2(currentHealth * 2, healthbar.sizeDelta.y);

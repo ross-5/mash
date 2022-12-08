@@ -17,8 +17,9 @@ public class P1Health : MonoBehaviour
     //I'll add this when we get attacks made
     void OnBecameInvisible()
     {
-        currentHealth = 0;
-        SceneManager.LoadScene(5);
+        currentHealth = 100;
+        GetComponent<Health>().TakeDamage(currentHealth);
+        
     }
     // Update is called once per frame
     void Update()
